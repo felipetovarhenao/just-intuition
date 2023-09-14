@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { questionActions } from "./redux/questionSlice";
 import Question from "./components/Question";
+import FractionOp from "./utils/FractionOp";
 
 function App() {
   const { questions, evaluation } = useAppSelector((state) => state.question);
@@ -25,16 +26,17 @@ function App() {
       return;
     }
     setIsComplete(questions.every((q) => q.response !== undefined));
+    console.log(FractionOp.normalize({ n: 1, d: 4 }));
   }, [questions]);
 
   return (
     <div>
       <h1>Just intuition app</h1>
       {questions.length === 0 ? (
-        <button onClick={() => dispatch(questionActions.generate(3))}>start new quiz</button>
+        <button onClick={() => dispatch(questionActions.generate(10))}>start new quiz</button>
       ) : (
         <div>
-          <div>{`${Math.round((questionIndex / questions.length) * 100)}%`}</div>
+          <div>Progress: {`${Math.round((questionIndex / questions.length) * 100)}%`}</div>
           {<Question id={questionIndex} question={questions[questionIndex]} />}
           <div>
             {questionIndex < questions.length - 1 ? (

@@ -81,7 +81,7 @@ export default class FractionOp {
       y = this.multiply(y, isAbove(y) ? { n: 1, d: 2 } : { n: 2, d: 1 });
       i += 1;
     }
-    return y;
+    return this.reduce(y);
   }
 
   public static decimalToFraction(decimal: number, acceptableDenominators: number[] = [...Array(20).keys()].map((_, i) => i + 1)): Fraction {

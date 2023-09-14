@@ -13,7 +13,7 @@ export default class QuestionGen {
   public static normalForm(): FractionalAnswerQuestion {
     const isBelow = Math.random() > 0.5;
     const ratio = randomFraction(...(isBelow ? [0.1, 0.9] : [2.1, 5]));
-    const prompt = `Provide an interval ratio that is octave-equivalent to ${FractionOp.toString(
+    const prompt = `Provide a reduced interval ratio that is octave-equivalent to ${FractionOp.toString(
       ratio
     )}, such that it falls in the (1, 2] range — i.e., 1 ≤ ratio < 2`;
     const answer = FractionOp.toString(FractionOp.normalize(ratio));
@@ -83,11 +83,19 @@ export default class QuestionGen {
     const op = randomChoice(ops);
 
     const answer = String(op!.func(a, b) as boolean);
-    // console.log(FractionOp.fractionToDecimal(a), FractionOp.fractionToDecimal(b), op?.symbol, answer);
+
+    const getPrompt = (a: string, b: string, op: string) => {
+      const isPitch = Math.random() > 0.5;
+      const noun = isPitch ? "pitch" : "interval";
+      const comparison = op === ops[0].symbol ? (isPitch ? "higher" : "greater") : isPitch ? "lower" : "smaller";
+      return `Is the ${noun} ratio ${a} ${comparison} than ${b}?`;
+    };
+
+    const prompt = getPrompt(FractionOp.toString(a), FractionOp.toString(b), op!.symbol);
 
     return {
       type: QuestionType.BOOLEAN,
-      prompt: `Is the statement ${FractionOp.toString(a)} ${op!.symbol} ${FractionOp.toString(b)} true or false?`,
+      prompt,
       answer,
     };
   }
