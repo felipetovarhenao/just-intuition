@@ -1,33 +1,55 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { questionActions } from "./redux/questionSlice";
-import splitStringOnFraction from "./utils/splitStringOnFraction";
+import Question from "./components/Question";
 
 function App() {
-  const questions = useAppSelector((state) => state.question.questions);
+  const { questions, evaluation } = useAppSelector((state) => state.question);
   const dispatch = useAppDispatch();
+
+  const [isComplete, setIsComplete] = useState(false);
+
+  const [questionIndex, setQuestionIndex] = useState(0);
+
+  function nextQuestion() {
+    setQuestionIndex((x) => x + 1);
+  }
+
+  function submitAnswers() {
+    dispatch(questionActions.evaluate());
+    setQuestionIndex(0);
+  }
 
   useEffect(() => {
     if (questions.length === 0) {
       return;
     }
-    const result = splitStringOnFraction(questions[0].prompt);
-    console.log(result);
+    setIsComplete(questions.every((q) => q.response !== undefined));
   }, [questions]);
 
   return (
     <div>
       <h1>Just intuition app</h1>
-      <button onClick={() => dispatch(questionActions.generate(10))}>generate new quiz</button>
-      <div>
-        {questions?.map((q, i) => (
-          <div key={`${i}-${q.prompt}`}>
-            <h2>{`${i + 1}) ${q.prompt}`}</h2>
-            <h3>{`${q.answer}`}</h3>
-            <br />
+      {questions.length === 0 ? (
+        <button onClick={() => dispatch(questionActions.generate(3))}>start new quiz</button>
+      ) : (
+        <div>
+          <div>{`${Math.round((questionIndex / questions.length) * 100)}%`}</div>
+          {<Question id={questionIndex} question={questions[questionIndex]} />}
+          <div>
+            {questionIndex < questions.length - 1 ? (
+              <button disabled={questions[questionIndex].response === undefined} onClick={nextQuestion}>
+                next question
+              </button>
+            ) : (
+              <button onClick={submitAnswers} disabled={!isComplete}>
+                submit
+              </button>
+            )}
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+      {evaluation && <div>Your score is {Math.round(evaluation?.score * 100)}%</div>}
       <br />
       <footer>To report a bug, please send me an email</footer>
     </div>

@@ -63,33 +63,26 @@ export default class QuestionGen {
 
   public static comparison(): BooleanQuestion {
     const a = randomFraction(0.1, 0.9);
-    const b = randomFraction(0.1, 0.9);
+    let b = { ...a };
+
+    while (FractionOp.equal(a, b)) {
+      b = randomFraction(0.1, 0.9);
+    }
+
     const ops = [
       {
         symbol: ">",
         func: (a: Fraction, b: Fraction) => FractionOp.gt(a, b),
       },
       {
-        symbol: "≥",
-        func: (a: Fraction, b: Fraction) => FractionOp.gte(a, b),
-      },
-      {
-        symbol: "=",
-        func: (a: Fraction, b: Fraction) => FractionOp.equal(a, b),
-      },
-      {
         symbol: "<",
         func: (a: Fraction, b: Fraction) => FractionOp.lt(a, b),
-      },
-      {
-        symbol: "≤",
-        func: (a: Fraction, b: Fraction) => FractionOp.lte(a, b),
       },
     ];
 
     const op = randomChoice(ops);
 
-    const answer = op!.func(a, b) as boolean;
+    const answer = String(op!.func(a, b) as boolean);
     // console.log(FractionOp.fractionToDecimal(a), FractionOp.fractionToDecimal(b), op?.symbol, answer);
 
     return {
@@ -135,7 +128,7 @@ export default class QuestionGen {
     return {
       type: QuestionType.BOOLEAN,
       prompt,
-      answer: isTrue,
+      answer: String(isTrue),
     };
   }
 }

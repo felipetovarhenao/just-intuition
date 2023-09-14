@@ -11,7 +11,7 @@ export type BasicQuestion<T = string> = {
   answer: T;
 };
 
-export type BooleanQuestion = Omit<BasicQuestion<boolean>, "type"> & {
+export type BooleanQuestion = Omit<BasicQuestion<string>, "type"> & {
   type: QuestionType.BOOLEAN;
 };
 
@@ -23,3 +23,5 @@ export type MultipleChoiceQuestion = Omit<BasicQuestion, "type"> & {
 export type FractionalAnswerQuestion = Omit<BasicQuestion, "type"> & {
   type: QuestionType.FRACTIONAL_ANSWER;
 };
+
+export type GenericQuestion = BooleanQuestion | MultipleChoiceQuestion | FractionalAnswerQuestion;
