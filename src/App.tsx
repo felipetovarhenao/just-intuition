@@ -1,8 +1,8 @@
+import "./App.scss";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { questionActions } from "./redux/questionSlice";
 import Question from "./components/Question";
-import FractionOp from "./utils/FractionOp";
 
 function App() {
   const { questions, evaluation } = useAppSelector((state) => state.question);
@@ -26,7 +26,6 @@ function App() {
       return;
     }
     setIsComplete(questions.every((q) => q.response !== undefined));
-    console.log(FractionOp.normalize({ n: 1, d: 4 }));
   }, [questions]);
 
   return (
