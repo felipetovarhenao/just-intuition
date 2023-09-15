@@ -7,10 +7,13 @@ export type MicSettings = {
   noiseSuppression?: boolean;
 };
 
+type QuestionArray = Array<BooleanQuestion | FractionalAnswerQuestion | MultipleChoiceQuestion>;
+
 type InitialState = {
-  questions: Array<BooleanQuestion | FractionalAnswerQuestion | MultipleChoiceQuestion>;
+  questions: QuestionArray;
   evaluation?: {
     score: number;
+    summary: QuestionArray;
   };
 };
 
@@ -40,6 +43,7 @@ const question = createSlice({
       state.questions.forEach((q) => (correctCount += Number(q.answer === q.response)));
       state.evaluation = {
         score: correctCount / state.questions.length,
+        summary: [...state.questions],
       };
       state.questions = [];
     },

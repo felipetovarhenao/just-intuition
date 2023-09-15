@@ -5,6 +5,8 @@ import { questionActions } from "./redux/questionSlice";
 import Question from "./components/Question/Question";
 import Button from "./components/Button/Button";
 
+const NUM_QUESTIONS = 10;
+
 function App() {
   const { questions, evaluation } = useAppSelector((state) => state.question);
   const dispatch = useAppDispatch();
@@ -35,7 +37,7 @@ function App() {
       <h2>web app</h2>
       <div className="app__container">
         {questions.length === 0 ? (
-          <Button onClick={() => dispatch(questionActions.generate(10))}>start new quiz</Button>
+          <Button onClick={() => dispatch(questionActions.generate(NUM_QUESTIONS))}>start new quiz</Button>
         ) : (
           <div className="app__container__question-card">
             <div>Progress: {`${Math.round((questionIndex / questions.length) * 100)}%`}</div>
@@ -55,8 +57,18 @@ function App() {
             )}
           </div>
         )}
+        {evaluation && (
+          <div>
+            <h2>quiz summary</h2>
+            <div>Final score: {Math.round(evaluation?.score * 100)}%</div>
+            <div>
+              {evaluation.summary.map((q, i) => (
+                <Question key={q.prompt} id={i} question={q} readonly />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-      {evaluation && <div>Your score is {Math.round(evaluation?.score * 100)}%</div>}
       <br />
       <footer className="app__footer">To report a bug, please send me an email</footer>
     </div>

@@ -1,6 +1,7 @@
 @use "../../styles/main.scss" as *;
 .question {
   @include v-stack;
+  @include on-load-animation(slide-down);
   gap: $gap-ml;
   .question__header {
     text-align: center;

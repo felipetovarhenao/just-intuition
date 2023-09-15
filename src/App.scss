@@ -16,15 +16,16 @@
     color: var(--primary-3);
   }
   .app__container {
-    @include h-stack-c;
+    @include v-stack;
     @include pad($gap-xxl);
+    align-items: center;
     gap: $gap-lg;
-
+    width: 100%;
+    max-width: 500px;
     .app__container__question-card {
       @include v-stack-c;
       width: 100%;
       gap: $gap-xxl;
-      max-width: 500px;
       .app__container__question-card__button {
         @include h-stack;
         margin-left: auto;
