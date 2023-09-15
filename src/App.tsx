@@ -39,7 +39,7 @@ function App() {
       <div className="app__header">
         <Logo className="app__header__logo" />
         <h1 className="app__header__name">just intuition</h1>
-        <h2 className="app__header__subtitle">web app</h2>
+        <h2 className="app__header__subtitle">an educational app for tuning theory enthusiasts</h2>
       </div>
       <div className="app__container">
         {questions.length === 0 ? (
@@ -77,17 +77,6 @@ function App() {
             )}
           </div>
         )}
-        {/* {evaluation && (
-          <div>
-            <h2>quiz summary</h2>
-            <div>Final score: {Math.round(evaluation?.score * 100)}%</div>
-            <div>
-              {evaluation.summary.map((q, i) => (
-                <Question key={q.prompt} id={i} question={q} readonly />
-              ))}
-            </div>
-          </div>
-        )} */}
       </div>
       <footer className="app__footer">
         <span className="app__footer__text">
@@ -99,7 +88,7 @@ function App() {
             https://felipe-tovar-henao.com/
           </a>
           &nbsp;|&nbsp;
-          <a target="_blank" rel="noreferrer" href="https://github.com/felipetovarhenao/midi-improviser">
+          <a target="_blank" rel="noreferrer" href="https://github.com/felipetovarhenao/just-intonation">
             <Icon className="gh-icon" icon="mdi:github" /> view on github
           </a>
         </span>

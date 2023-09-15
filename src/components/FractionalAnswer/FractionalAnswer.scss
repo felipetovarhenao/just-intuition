@@ -3,7 +3,7 @@
 .fractional-answer {
   @include v-stack;
   .fractional-answer__input {
-    // @include h-pad;
+    @include h-pad;
     font-size: $txt-lg;
     width: fit-content;
     text-align: center;
@@ -22,5 +22,8 @@
       border-bottom-left-radius: $radius;
       border-bottom-right-radius: $radius;
     }
+  }
+  .fractional-answer__hr {
+    width: 100%;
   }
 }

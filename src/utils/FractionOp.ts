@@ -74,17 +74,18 @@ export default class FractionOp {
 
   public static normalize(x: Fraction) {
     let i = 0;
+    const maxIter = 50;
     let y = { ...x };
     const isAbove = (f: Fraction) => this.gte(f, { n: 2, d: 1 });
     const isBelow = (f: Fraction) => this.lt(f, { n: 1, d: 1 });
-    while ((isAbove(y) || isBelow(y)) && i < 50) {
+    while ((isAbove(y) || isBelow(y)) && i < maxIter) {
       y = this.multiply(y, isAbove(y) ? { n: 1, d: 2 } : { n: 2, d: 1 });
       i += 1;
     }
     return this.reduce(y);
   }
 
-  public static decimalToFraction(decimal: number, acceptableDenominators: number[] = [...Array(20).keys()].map((_, i) => i + 1)): Fraction {
+  public static decimalToFraction(decimal: number, acceptableDenominators: number[] = [...Array(10).keys()].map((_, i) => i + 1)): Fraction {
     // check if decimal is negative
     const isNegative = decimal < 0;
 

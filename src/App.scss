@@ -7,6 +7,7 @@
   .app__header {
     @include v-stack-c;
     @include v-pad($gap-xxl);
+    @include h-pad($gap-xl);
     @include t-mar($gap-xxl);
     .app__header__logo {
       @include b-pad($gap-lg);

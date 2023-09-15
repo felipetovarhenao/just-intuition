@@ -29,7 +29,8 @@ const question = createSlice({
       state.questions = [];
       state.evaluation = undefined;
       const q = QuestionGen;
-      const callbacks = [q.closestInterval, q.comparison, q.normalForm, q.octaveEquivalence];
+      // const callbacks = [q.closestInterval, q.comparison, q.normalForm, q.octaveEquivalence];
+      const callbacks = [q.normalForm];
       for (let i = 0; i < action.payload; i += 1) {
         const cb = randomChoice(callbacks)!;
         state.questions.push(cb());
