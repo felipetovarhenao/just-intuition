@@ -25,7 +25,7 @@ export default class QuestionGen {
   }
   public static closestInterval(): MultipleChoiceQuestion {
     const intervalNames = [
-      "unison",
+      "perfect unison",
       "minor second",
       "major second",
       "minor third",
@@ -37,7 +37,7 @@ export default class QuestionGen {
       "major sixth",
       "minor seventh",
       "major seventh",
-      "octave",
+      "perfect octave",
     ];
 
     const intervalRatios = intervalNames.map((_, i) => 2 ** (i / 12));
@@ -87,7 +87,7 @@ export default class QuestionGen {
     const getPrompt = (a: string, b: string, op: string) => {
       const isPitch = Math.random() > 0.5;
       const noun = isPitch ? "pitch" : "interval";
-      const comparison = op === ops[0].symbol ? (isPitch ? "higher" : "greater") : isPitch ? "lower" : "smaller";
+      const comparison = op === ops[0].symbol ? (isPitch ? "higher" : "larger") : isPitch ? "lower" : "smaller";
       return `Is the ${noun} ratio ${a} ${comparison} than ${b}?`;
     };
 

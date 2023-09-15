@@ -2,7 +2,8 @@ import "./App.scss";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { questionActions } from "./redux/questionSlice";
-import Question from "./components/Question";
+import Question from "./components/Question/Question";
+import Button from "./components/Button/Button";
 
 function App() {
   const { questions, evaluation } = useAppSelector((state) => state.question);
@@ -29,30 +30,35 @@ function App() {
   }, [questions]);
 
   return (
-    <div>
-      <h1>Just intuition app</h1>
-      {questions.length === 0 ? (
-        <button onClick={() => dispatch(questionActions.generate(10))}>start new quiz</button>
-      ) : (
-        <div>
-          <div>Progress: {`${Math.round((questionIndex / questions.length) * 100)}%`}</div>
-          {<Question id={questionIndex} question={questions[questionIndex]} />}
-          <div>
+    <div className="app">
+      <h1 className="app__name">just intuition</h1>
+      <h2>web app</h2>
+      <div className="app__container">
+        {questions.length === 0 ? (
+          <Button onClick={() => dispatch(questionActions.generate(10))}>start new quiz</Button>
+        ) : (
+          <div className="app__container__question-card">
+            <div>Progress: {`${Math.round((questionIndex / questions.length) * 100)}%`}</div>
+            {<Question key={questionIndex} id={questionIndex} question={questions[questionIndex]} />}
             {questionIndex < questions.length - 1 ? (
-              <button disabled={questions[questionIndex].response === undefined} onClick={nextQuestion}>
+              <Button
+                className="app__container__question-card__button"
+                disabled={questions[questionIndex].response === undefined}
+                onClick={nextQuestion}
+              >
                 next question
-              </button>
+              </Button>
             ) : (
-              <button onClick={submitAnswers} disabled={!isComplete}>
+              <Button className="app__container__question-card__button" onClick={submitAnswers} disabled={!isComplete}>
                 submit
-              </button>
+              </Button>
             )}
           </div>
-        </div>
-      )}
+        )}
+      </div>
       {evaluation && <div>Your score is {Math.round(evaluation?.score * 100)}%</div>}
       <br />
-      <footer>To report a bug, please send me an email</footer>
+      <footer className="app__footer">To report a bug, please send me an email</footer>
     </div>
   );
 }

@@ -203,6 +203,9 @@
   &:not([disabled]):hover {
     background-color: $bg-col-hl;
   }
+  &[disabled] {
+    background-color: var(--disabled-2);
+  }
 }
 
 @mixin grow($grow: 1.125) {

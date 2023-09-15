@@ -1,0 +1,11 @@
+@use "../../styles/main.scss" as *;
+
+.button {
+  @include vh-pad($gap-ml, $gap-xl);
+  @include round;
+  @include btn;
+  text-transform: uppercase;
+  font-weight: $bold;
+  // background-color: var(--primary-3);
+  // // color: var(--txt-light);
+}

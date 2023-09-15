@@ -1,0 +1,17 @@
+@use "../../styles/main.scss" as *;
+
+.fractional-answer {
+  @include v-stack;
+  .fractional-answer__input {
+    // @include h-pad;
+    font-size: $txt-lg;
+    width: fit-content;
+    text-align: center;
+    background-color: var(--bg-3);
+    color: var(--txt-light);
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      appearance: none;
+    }
+  }
+}

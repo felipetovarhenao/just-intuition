@@ -1,17 +1,20 @@
-import { GenericQuestion, QuestionType } from "../types/questions";
-import FractionalAnswer from "./FractionalAnswer";
-import MultipleChoiceAnswers from "./MultipleChoiceAnswers";
+import "./Question.scss";
+import { GenericQuestion, QuestionType } from "../../types/questions";
+import FractionalAnswer from "../FractionalAnswer/FractionalAnswer";
+import MultipleChoiceAnswers from "../MultipleChoiceAnswers/MultipleChoiceAnswers";
 
 type QuestionProps = {
   id: number;
   question: GenericQuestion;
 };
+
 const Question = ({ id, question }: QuestionProps) => {
   return (
-    <div>
-      <h2>{`${id + 1}) ${question.prompt}`}</h2>
+    <div className="question">
+      <h4 className="question__header">question {id + 1}</h4>
+      <div className="question__prompt">{question.prompt}</div>
       <br />
-      <div>
+      <div className="question__user-input">
         {(() => {
           switch (question.type) {
             case QuestionType.BOOLEAN:

@@ -1,0 +1,23 @@
+@use "../../styles/main.scss" as *;
+
+.multiple-choice-answer {
+  @include v-stack;
+  @include v-pad;
+  gap: $gap-ml;
+  width: 100%;
+  .multiple-choice-answer__option {
+    @include v-pad;
+    @include round-border;
+    @include clickable;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: var(--bg-2);
+    &:hover {
+      background-color: var(--bg-3);
+    }
+    &.--selected {
+      background-color: var(--secondary-3);
+      cursor: default;
+    }
+  }
+}

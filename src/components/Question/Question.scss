@@ -1,0 +1,19 @@
+@use "../../styles/main.scss" as *;
+.question {
+  @include v-stack;
+  gap: $gap-ml;
+  .question__header {
+    text-align: center;
+    font-size: $txt-ms;
+    text-transform: uppercase;
+  }
+  .question__prompt {
+    font-size: $txt-ml;
+    font-weight: $bold;
+    text-align: center;
+  }
+  .question__user-input {
+    @include v-stack;
+    align-items: center;
+  }
+}
