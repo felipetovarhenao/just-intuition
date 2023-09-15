@@ -62,11 +62,11 @@ export default class QuestionGen {
   }
 
   public static comparison(): BooleanQuestion {
-    const a = randomFraction(0.1, 0.9);
+    const a = randomFraction(0.1, 2.9);
     let b = { ...a };
 
     while (FractionOp.equal(a, b)) {
-      b = randomFraction(0.1, 0.9);
+      b = randomFraction(0.1, 2.9);
     }
 
     const ops = [
