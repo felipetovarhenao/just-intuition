@@ -2,6 +2,8 @@ import "./Question.scss";
 import { GenericQuestion, QuestionType } from "../../types/questions";
 import FractionalAnswer from "../FractionalAnswer/FractionalAnswer";
 import MultipleChoiceAnswers from "../MultipleChoiceAnswers/MultipleChoiceAnswers";
+import Icon from "../Icon/Icon";
+import Hr from "../Hr/Hr";
 
 type QuestionProps = {
   id: number;
@@ -31,9 +33,17 @@ const Question = ({ id, question, readonly = false }: QuestionProps) => {
           })()}
         </div>
       ) : (
-        <div>
-          <div>Correct answer: {question.answer}</div>
-          {question.answer !== question.response && <div>Your answer: {question.response}</div>}
+        <div className="question__readonly">
+          {question.answer !== question.response && (
+            <div className="question__readonly__answer --incorrect">
+              <Icon icon="icon-park-solid:error" />
+              {question.response}
+            </div>
+          )}
+          <div className="question__readonly__answer --correct">
+            <Icon icon="mingcute:check-fill" /> {question.answer}
+          </div>
+          <Hr className="question__readonly__hr" />
         </div>
       )}
     </div>

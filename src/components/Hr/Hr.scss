@@ -1,0 +1,9 @@
+@use "../../styles/main.scss" as *;
+
+.Hr {
+  height: $gap-sm;
+  background: var(--disabled-5);
+	opacity: 75%;
+  width: 12%;
+  min-width: 10px;
+}

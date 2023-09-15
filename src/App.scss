@@ -4,16 +4,30 @@
   @include v-stack;
   align-items: center;
   height: 100%;
-  .app__name {
-    @include v-pad;
-    @include t-mar($gap-xxl);
+  .app__header {
     @include v-stack-c;
-    justify-content: start;
-    text-align: center;
-    font-size: $txt-xl;
-    font-weight: $bold;
-    text-transform: uppercase;
-    color: var(--primary-3);
+    @include v-pad($gap-xxl);
+    @include t-mar($gap-xxl);
+    .app__header__logo {
+      @include b-pad($gap-lg);
+      align-self: center;
+      max-width: 40px;
+      height: auto;
+    }
+    .app__header__name {
+      @include v-stack-c;
+      justify-content: start;
+      text-align: center;
+      font-size: $txt-xl;
+      font-weight: $bold;
+      text-transform: uppercase;
+      color: var(--primary-3);
+    }
+    .app__header__subtitle {
+      font-weight: $bold;
+      text-align: center;
+      color: var(--fg-5);
+    }
   }
   .app__container {
     @include v-stack;
@@ -22,6 +36,26 @@
     gap: $gap-lg;
     width: 100%;
     max-width: 500px;
+    .app__container__summary {
+      @include v-stack-c;
+      gap: $gap-xl;
+      .app__container__summary__header {
+        text-align: center;
+        text-transform: uppercase;
+        font-size: $txt-ml;
+        font-weight: $bold;
+      }
+      .app__container__summary__score {
+        text-align: center;
+        font-size: $txt-lg;
+        color: var(--caution-3);
+        font-weight: $bold;
+      }
+      .app__container__summary__questions {
+        @include v-stack-c;
+        gap: $gap-xxl;
+      }
+    }
     .app__container__question-card {
       @include v-stack-c;
       width: 100%;
@@ -34,8 +68,22 @@
     }
   }
   .app__footer {
-    @include v-pad($gap-xl);
+    @include pad($gap-xl);
     @include to-bottom;
-    justify-content: flex-end;
+    @include wrap;
+    @include v-stack;
+    justify-content: center;
+    gap: $gap-md;
+    .app__footer__text {
+      &,
+      a {
+        text-align: center;
+        font-size: $txt-sm;
+      }
+      .gh-icon {
+        vertical-align: middle;
+        font-size: $txt-ml;
+      }
+    }
   }
 }

@@ -1,0 +1,23 @@
+@use "../../styles/main.scss" as *;
+
+.progress-bar {
+  @include h-stack;
+  @include round;
+  width: 100%;
+  height: $gap-md;
+  background-color: var(--bg-2);
+  &.--low .progress-bar__inner {
+    background-color: var(--secondary-3);
+  }
+  &.--mid .progress-bar__inner {
+    background-color: var(--primary-3);
+  }
+  &.--high .progress-bar__inner {
+    background-color: var(--success-3);
+  }
+  .progress-bar__inner {
+		@include trans;
+    @include round;
+    height: 100%;
+  }
+}

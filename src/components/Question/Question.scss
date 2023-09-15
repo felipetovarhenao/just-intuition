@@ -1,4 +1,5 @@
 @use "../../styles/main.scss" as *;
+
 .question {
   @include v-stack;
   @include on-load-animation(slide-down);
@@ -7,6 +8,7 @@
     text-align: center;
     font-size: $txt-ms;
     text-transform: uppercase;
+    color: var(--fg-5);
   }
   .question__prompt {
     font-size: $txt-ml;
@@ -16,5 +18,36 @@
   .question__user-input {
     @include v-stack;
     align-items: center;
+  }
+  .question__readonly {
+    @include v-stack-c;
+    gap: $gap-md;
+    align-items: center;
+    .question__readonly__answer {
+      @include h-stack-c;
+      justify-content: center;
+      gap: $gap-ml;
+      font-size: $txt-md;
+      text-transform: uppercase;
+      color: var(--fg-3);
+      .icon {
+        vertical-align: middle;
+        font-size: $txt-lg;
+      }
+      &.--correct {
+        font-weight: $bold;
+        .icon * {
+          color: var(--success-3);
+        }
+      }
+      &.--incorrect {
+        .icon * {
+          color: var(--danger-3);
+        }
+      }
+    }
+    .question__readonly__hr {
+      @include t-mar($gap-xxl);
+    }
   }
 }

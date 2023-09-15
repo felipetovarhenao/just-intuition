@@ -13,5 +13,14 @@
     &::-webkit-outer-spin-button {
       appearance: none;
     }
+    $radius: $gap-lg;
+    &.--numerator {
+      border-top-left-radius: $radius;
+      border-top-right-radius: $radius;
+    }
+    &.--denominator {
+      border-bottom-left-radius: $radius;
+      border-bottom-right-radius: $radius;
+    }
   }
 }

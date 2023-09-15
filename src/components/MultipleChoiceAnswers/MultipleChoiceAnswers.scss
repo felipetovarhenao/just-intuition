@@ -12,12 +12,14 @@
     text-align: center;
     text-transform: uppercase;
     background-color: var(--bg-2);
+    @include trans;
     &:hover {
       background-color: var(--bg-3);
     }
     &.--selected {
       background-color: var(--secondary-3);
       cursor: default;
+      scale: 1.02;
     }
   }
 }
