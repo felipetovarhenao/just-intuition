@@ -32,6 +32,7 @@ const FractionalAnswer = ({ id }: FractionalAnswerProps) => {
         className="fractional-answer__input --numerator"
         onChange={(e) => setNum(removeNonDigits(e.target.value))}
         pattern="\d*"
+        type="phone"
         value={num}
         maxLength={2}
         step={1}
@@ -41,6 +42,7 @@ const FractionalAnswer = ({ id }: FractionalAnswerProps) => {
         className="fractional-answer__input --denominator"
         onChange={(e) => setDen(removeNonDigits(e.target.value))}
         pattern="\d*"
+        type="phone"
         value={den}
         maxLength={2}
         step={1}
