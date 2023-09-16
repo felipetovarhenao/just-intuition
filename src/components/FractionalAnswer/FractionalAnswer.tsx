@@ -17,7 +17,7 @@ const FractionalAnswer = ({ id }: FractionalAnswerProps) => {
     if (!input) {
       return input;
     } else {
-      const num = String(Number(input.replace(/\D/g, "")));
+      const num = String(Number(input.replace(/\D/g, ""))).slice(0, 2);
       return num;
     }
   }
@@ -26,25 +26,30 @@ const FractionalAnswer = ({ id }: FractionalAnswerProps) => {
     dispatch(questionActions.answer({ id, answer: `${num}/${den}` }));
   }, [num, den]);
 
+  function omitSymbols(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (/(\.|\-|\+|\,|\`)/.test(e.key)) {
+      e.preventDefault();
+    }
+  }
+
   return (
     <div className="fractional-answer">
       <input
         className="fractional-answer__input --numerator"
         onChange={(e) => setNum(removeNonDigits(e.target.value))}
-        pattern="\d*"
-        type="phone"
         value={num}
+        type="number"
         maxLength={2}
+        onKeyDown={omitSymbols}
         step={1}
       />
       <Hr className="fractional-answer__hr" />
       <input
         className="fractional-answer__input --denominator"
         onChange={(e) => setDen(removeNonDigits(e.target.value))}
-        pattern="\d*"
-        type="phone"
         value={den}
         maxLength={2}
+        onKeyDown={omitSymbols}
         step={1}
       />
     </div>
