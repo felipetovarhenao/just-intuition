@@ -40,7 +40,7 @@ function App() {
       <div className="app__header">
         <Logo className="app__header__logo" />
         <h1 className="app__header__name">just intuition</h1>
-        <h2 className="app__header__subtitle">an educational app for tuning theory enthusiasts</h2>
+        <h2 className="app__header__subtitle">a simple educational app for tuning theory enthusiasts</h2>
       </div>
       <div className="app__container">
         {questions.length === 0 ? (
@@ -58,14 +58,14 @@ function App() {
                 <br />
               </div>
             )}
-            <Button onClick={() => dispatch(questionActions.generate(NUM_QUESTIONS))}>start new quiz</Button>
+            <Button onClick={() => dispatch(questionActions.generate(NUM_QUESTIONS))}>take new quiz</Button>
             {questions.length === 0 && !evaluation && (
               <>
                 <br />
                 <Hr />
                 <div className="app__container__description">
-                  Just Intuition is an educational web app that helps you <b>assess</b>, <b>test</b>, and <b>improve</b> your intuition on rational
-                  representations of pitches and intervals in the context of just intonation and tuning theory more broadly.
+                  <i>just intuition</i> is a simple educational web app that helps you <b>assess</b>, <b>test</b>, and <b>improve</b> your intuition on
+                  rational representations of pitches and intervals in the context of just intonation and tuning theory more broadly.
                 </div>
                 <Hr />
               </>
