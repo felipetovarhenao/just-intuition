@@ -49,9 +49,10 @@ const FractionalAnswer = ({ id }: FractionalAnswerProps) => {
         className="fractional-answer__input --denominator"
         onChange={(e) => setDen(removeNonDigits(e.target.value))}
         value={den}
+        type="number"
         maxLength={2}
-        onKeyDown={omitSymbols}
         placeholder="2"
+        onKeyDown={omitSymbols}
         step={1}
       />
     </div>
