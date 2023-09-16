@@ -5,7 +5,7 @@
   @include round;
   width: 100%;
   height: $gap-md;
-  background-color: var(--bg-2);
+  background-color: var(--bg-4);
   &.--low .progress-bar__inner {
     background-color: var(--secondary-3);
   }
