@@ -21,6 +21,10 @@
       border-bottom-left-radius: $radius;
       border-bottom-right-radius: $radius;
     }
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      appearance: none;
+    }
   }
   .fractional-answer__hr {
     width: 100%;

@@ -40,6 +40,7 @@ const FractionalAnswer = ({ id }: FractionalAnswerProps) => {
         value={num}
         type="number"
         maxLength={2}
+        placeholder="1"
         onKeyDown={omitSymbols}
         step={1}
       />
@@ -50,6 +51,7 @@ const FractionalAnswer = ({ id }: FractionalAnswerProps) => {
         value={den}
         maxLength={2}
         onKeyDown={omitSymbols}
+        placeholder="2"
         step={1}
       />
     </div>
