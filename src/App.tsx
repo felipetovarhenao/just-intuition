@@ -7,6 +7,7 @@ import Button from "./components/Button/Button";
 import Logo from "./components/Logo/Logo";
 import ProgressBar from "./components/ProgressBar/ProgressBar";
 import Icon from "./components/Icon/Icon";
+import Hr from "./components/Hr/Hr";
 
 const NUM_QUESTIONS = 10;
 
@@ -48,6 +49,7 @@ function App() {
               <div className="app__container__summary">
                 <h2 className="app__container__summary__header">quiz summary</h2>
                 <div className="app__container__summary__score">Final score: {Math.round(evaluation?.score * 100)}%</div>
+                <ProgressBar value={evaluation!.score} />
                 <div className="app__container__summary__questions">
                   {evaluation.summary.map((q, i) => (
                     <Question key={q.prompt} id={i} question={q} readonly />
@@ -57,6 +59,17 @@ function App() {
               </div>
             )}
             <Button onClick={() => dispatch(questionActions.generate(NUM_QUESTIONS))}>start new quiz</Button>
+            {questions.length === 0 && !evaluation && (
+              <>
+                <br />
+                <Hr />
+                <div className="app__container__description">
+                  Just Intuition is an educational web app that helps you <b>assess</b>, <b>test</b>, and <b>improve</b> your intuition on rational
+                  representations of pitches and intervals in the context of just intonation and tuning theory more broadly.
+                </div>
+                <Hr />
+              </>
+            )}
           </>
         ) : (
           <div className="app__container__question-card">

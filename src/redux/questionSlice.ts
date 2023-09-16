@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import QuestionGen from "../utils/QuestionGen";
-import randomChoice from "../utils/randomChoice";
 import { BooleanQuestion, FractionalAnswerQuestion, MultipleChoiceQuestion } from "../types/questions";
+import generateURNArray from "../utils/generateURNArray";
 
 export type MicSettings = {
   noiseSuppression?: boolean;
@@ -29,12 +29,10 @@ const question = createSlice({
       state.questions = [];
       state.evaluation = undefined;
       const q = QuestionGen;
-      // const callbacks = [q.closestInterval, q.comparison, q.normalForm, q.octaveEquivalence];
-      const callbacks = [q.normalForm];
-      for (let i = 0; i < action.payload; i += 1) {
-        const cb = randomChoice(callbacks)!;
-        state.questions.push(cb());
-      }
+      const callbacks = [q.closestInterval, q.comparison, q.normalForm, q.octaveEquivalence];
+      generateURNArray(action.payload, callbacks.length).map((i) => {
+        state.questions.push(callbacks[i]());
+      });
     },
     answer: (state, action: PayloadAction<{ id: number; answer: string }>) => {
       state.questions[action.payload.id].response = action.payload.answer;

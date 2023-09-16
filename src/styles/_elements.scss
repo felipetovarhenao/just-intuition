@@ -27,12 +27,15 @@ button,
 input {
   @include mixins.clickable;
   color: var(--txt-dark);
+  outline-color: var(--caution-3);
 }
 
 html,
 body,
 #root {
-  background-color: var(--bg-1);
+  background: linear-gradient(0deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   width: 100vw;
   height: 100%;
 }

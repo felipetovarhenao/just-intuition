@@ -67,6 +67,17 @@
         margin-right: auto;
       }
     }
+    .app__container__description {
+      @include v-pad($gap-xl);
+      &,
+      * {
+        text-align: center;
+        font-size: $txt-ms;
+      }
+      b {
+        color: var(--primary-3);
+      }
+    }
   }
   .app__footer {
     @include pad($gap-xl);

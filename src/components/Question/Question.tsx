@@ -4,6 +4,8 @@ import FractionalAnswer from "../FractionalAnswer/FractionalAnswer";
 import MultipleChoiceAnswers from "../MultipleChoiceAnswers/MultipleChoiceAnswers";
 import Icon from "../Icon/Icon";
 import Hr from "../Hr/Hr";
+import splitStringOnFraction from "../../utils/splitStringOnFraction";
+import classNames from "classnames";
 
 type QuestionProps = {
   id: number;
@@ -15,7 +17,13 @@ const Question = ({ id, question, readonly = false }: QuestionProps) => {
   return (
     <div className="question">
       <h4 className="question__header">question {id + 1}</h4>
-      <div className="question__prompt">{question.prompt}</div>
+      <div className="question__prompt">
+        {splitStringOnFraction(question.prompt).map((token, i) => (
+          <span key={i} className={classNames("question__prompt__token", { "--is-fraction": token.isFraction })}>
+            {token.substring}
+          </span>
+        ))}
+      </div>
       <br />
       {!readonly ? (
         <div className="question__user-input">

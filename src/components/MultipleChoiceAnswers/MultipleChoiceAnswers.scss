@@ -18,6 +18,7 @@
     }
     &.--selected {
       background-color: var(--secondary-3);
+      color: var(--txt-light);
       cursor: default;
       scale: 1.02;
     }
