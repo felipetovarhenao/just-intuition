@@ -15,7 +15,7 @@
     .question__prompt__token {
       font-size: $txt-ml;
       font-weight: $bold;
-      &.--is-fraction {
+      &.--highlight {
         color: var(--caution-3);
       }
     }
@@ -48,6 +48,18 @@
       &.--incorrect {
         .icon * {
           color: var(--danger-3);
+        }
+      }
+    }
+    .question__readonly__proof {
+      @include t-pad($gap-xl);
+      @include l-pad($gap-xxl);
+      @include l-mar($gap-xxl);
+      .question__readonly__proof__token {
+        font-size: $txt-ms;
+        &.--highlight {
+          color: var(--caution-3);
+          font-weight: $bold;
         }
       }
     }

@@ -4,8 +4,8 @@ import FractionalAnswer from "../FractionalAnswer/FractionalAnswer";
 import MultipleChoiceAnswers from "../MultipleChoiceAnswers/MultipleChoiceAnswers";
 import Icon from "../Icon/Icon";
 import Hr from "../Hr/Hr";
-import splitStringOnFraction from "../../utils/splitStringOnFraction";
 import classNames from "classnames";
+import tokenizeString, { TokenType } from "../../utils/tokenizeString";
 
 type QuestionProps = {
   id: number;
@@ -14,12 +14,15 @@ type QuestionProps = {
 };
 
 const Question = ({ id, question, readonly = false }: QuestionProps) => {
+  function isHighlight(type: TokenType) {
+    return [TokenType.FRACTION, TokenType.NUMERIC, TokenType.SPECIAL_CHAR].includes(type);
+  }
   return (
     <div className="question">
       <h4 className="question__header">question {id + 1}</h4>
       <div className="question__prompt">
-        {splitStringOnFraction(question.prompt).map((token, i) => (
-          <span key={i} className={classNames("question__prompt__token", { "--is-fraction": token.isFraction })}>
+        {tokenizeString(question.prompt).map((token, i) => (
+          <span key={i} className={classNames("question__prompt__token", { "--highlight": isHighlight(token.type) })}>
             {token.substring}
           </span>
         ))}
@@ -50,6 +53,19 @@ const Question = ({ id, question, readonly = false }: QuestionProps) => {
           )}
           <div className="question__readonly__answer --correct">
             <Icon icon="mingcute:check-fill" /> {question.answer}
+          </div>
+          <div className="question__readonly__proof">
+            <b className="question__readonly__proof__token">Explanation</b>:{" "}
+            {tokenizeString(question.proof).map((token, i) => (
+              <span
+                key={i}
+                className={classNames("question__readonly__proof__token", {
+                  "--highlight": isHighlight(token.type),
+                })}
+              >
+                {token.substring}
+              </span>
+            ))}
           </div>
           <Hr className="question__readonly__hr" />
         </div>

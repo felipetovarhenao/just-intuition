@@ -30,7 +30,7 @@ export default class QuestionGen {
       const floatAnswer = Math.round(FractionOp.fractionToDecimal(normRatio) * 100) / 100;
       const proof = `${input} is ${times} octave${isPlural ? "s" : ""} ${isPositive ? "above" : "below"} the desired range, which means we must ${
         isPositive ? "divide" : "multiply"
-      } ${input} by 2 ${isPlural ? `${times} times (i.e., 2 to the power of ${times}) ` : ""}to get ${answer} (${floatAnswer}).`;
+      } ${input} by 2${isPlural ? `, ${times} times (i.e., 2 to the power of ${times}),` : ""} to get ${answer} (${floatAnswer}).`;
       return proof;
     };
     return {
@@ -76,7 +76,7 @@ export default class QuestionGen {
       const closestName = intervalNames[closest.id];
       return `Expressed in cents, a ${closestName} is ${bCents}¢, while the ratio ${FractionOp.toString(
         ratio
-      )} is ${aCents}¢. Among the options, ${closestName} is the best approximation (${
+      )} is ${aCents}¢. Among the options, the ${closestName} is the best approximation (${
         Math.round(Math.abs(aCents - bCents) * 100) / 100
       }¢ difference).`;
     };
@@ -169,8 +169,10 @@ export default class QuestionGen {
         const numOctaves = Math.abs(octaveShift);
         const isPlural = numOctaves > 1;
         return `${aString} ${isAbove ? "divided" : "multiplied"} by 2${
-          isPlural ? ` ${numOctaves} times is ${bString}` : ""
-        }, which means that ${FractionOp.toString(a)} and ${FractionOp.toString(b)} are exactly ${numOctaves} octave${isPlural ? "s" : ""} apart.`;
+          isPlural ? `, ${numOctaves} times (i.e., 2 to the power of ${numOctaves}),` : ""
+        } is ${bString}, which means that ${FractionOp.toString(a)} and ${FractionOp.toString(b)} are exactly ${numOctaves} octave${
+          isPlural ? "s" : ""
+        } apart.`;
       } else {
         return `For two ratios to be octave equivalent we must be able to multiply or divide one of them by 2 one or more times to get the other, which is not possible with ${aString} and ${bString}.`;
       }
