@@ -9,6 +9,7 @@ export type BasicQuestion<T = string> = {
   prompt: string;
   response?: T;
   answer: T;
+  proof: string;
 };
 
 export type BooleanQuestion = Omit<BasicQuestion<string>, "type"> & {

@@ -6,6 +6,7 @@ import generateURNArray from "./generateURNArray";
 import getUniqueFractionPair from "./getUniqueFractionPair";
 import randomChoice from "./randomChoice";
 import randomFraction from "./randomFraction";
+import ratioToCents from "./ratioToCents";
 import shuffleArray from "./shuffleArray";
 import wrapValue from "./wrapValue";
 
@@ -16,11 +17,27 @@ export default class QuestionGen {
     const prompt = `Provide a reduced interval ratio that is octave-equivalent to ${FractionOp.toString(
       ratio
     )}, such that it falls in the (1, 2] range — i.e., 1 ≤ ratio < 2`;
-    const answer = FractionOp.toString(FractionOp.normalize(ratio));
+
+    const normRatio = FractionOp.normalize(ratio);
+    const answer = FractionOp.toString(normRatio);
+
+    const getProof = (): string => {
+      const numOctaves = Math.round(Math.log2(FractionOp.fractionToDecimal(FractionOp.divide(ratio, normRatio))));
+      const times = Math.abs(numOctaves);
+      const isPlural = times > 1;
+      const isPositive = numOctaves > 0;
+      const input = FractionOp.toString(ratio);
+      const floatAnswer = Math.round(FractionOp.fractionToDecimal(normRatio) * 100) / 100;
+      const proof = `${input} is ${times} octave${isPlural ? "s" : ""} ${isPositive ? "above" : "below"} the desired range, which means we must ${
+        isPositive ? "divide" : "multiply"
+      } ${input} by 2 ${isPlural ? `${times} times (i.e., 2 to the power of ${times}) ` : ""}to get ${answer} (${floatAnswer}).`;
+      return proof;
+    };
     return {
       type: QuestionType.FRACTIONAL_ANSWER,
       prompt,
       answer,
+      proof: getProof(),
     };
   }
   public static closestInterval(): MultipleChoiceQuestion {
@@ -53,10 +70,22 @@ export default class QuestionGen {
 
     const choices = shuffleArray([0, ...randomIndices]).map((x) => intervalNames[wrapValue(closest.id + x, intervalNames.length)]);
 
+    const getProof = () => {
+      const aCents = ratioToCents(FractionOp.fractionToDecimal(ratio));
+      const bCents = ratioToCents(intervalRatios[closest.id]);
+      const closestName = intervalNames[closest.id];
+      return `Expressed in cents, a ${closestName} is ${bCents}¢, while the ratio ${FractionOp.toString(
+        ratio
+      )} is ${aCents}¢. Among the options, ${closestName} is the best approximation (${
+        Math.round(Math.abs(aCents - bCents) * 100) / 100
+      }¢ difference).`;
+    };
+
     return {
       type: QuestionType.MULTIPLE_CHOICE,
       prompt,
       answer,
+      proof: getProof(),
       choices,
     };
   }
@@ -88,10 +117,21 @@ export default class QuestionGen {
 
     const prompt = getPrompt(FractionOp.toString(a), FractionOp.toString(b), op!.symbol);
 
+    const getProof = () => {
+      const aString = FractionOp.toString(a);
+      const bString = FractionOp.toString(b);
+      const aFloat = Math.round(FractionOp.fractionToDecimal(a) * 100) / 100;
+      const bFloat = Math.round(FractionOp.fractionToDecimal(b) * 100) / 100;
+      return `Expressed as decimals, ${aString} is ${aFloat}, and ${bString} is ${bFloat} which means that the statement ${aString} ${
+        op!.symbol
+      } ${bString} is ${answer}.`;
+    };
+
     return {
       type: QuestionType.BOOLEAN,
       prompt,
       answer,
+      proof: getProof(),
     };
   }
   public static octaveEquivalence(): BooleanQuestion {
@@ -120,10 +160,27 @@ export default class QuestionGen {
 
     const prompt = `Are the pitch ratios ${FractionOp.toString(a)} and ${FractionOp.toString(b)} octave-equivalent?`;
 
+    const getProof = (): string => {
+      const aString = FractionOp.toString(a);
+      const bString = FractionOp.toString(b);
+      if (isTrue) {
+        const octaveShift = Math.log2(FractionOp.fractionToDecimal(FractionOp.divide(a, b)));
+        const isAbove = octaveShift > 0;
+        const numOctaves = Math.abs(octaveShift);
+        const isPlural = numOctaves > 1;
+        return `${aString} ${isAbove ? "divided" : "multiplied"} by 2${
+          isPlural ? ` ${numOctaves} times is ${bString}` : ""
+        }, which means that ${FractionOp.toString(a)} and ${FractionOp.toString(b)} are exactly ${numOctaves} octave${isPlural ? "s" : ""} apart.`;
+      } else {
+        return `For two ratios to be octave equivalent we must be able to multiply or divide one of them by 2 one or more times to get the other, which is not possible with ${aString} and ${bString}.`;
+      }
+    };
+
     return {
       type: QuestionType.BOOLEAN,
       prompt,
       answer: String(isTrue),
+      proof: getProof(),
     };
   }
 
