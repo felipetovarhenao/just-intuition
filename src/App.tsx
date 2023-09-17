@@ -64,8 +64,8 @@ function App() {
                 <br />
                 <Hr />
                 <div className="app__container__description">
-                  <i>just intuition</i> is a simple educational web app that helps you <b>assess</b>, <b>test</b>, and <b>improve</b> your intuition on
-                  rational representations of pitches and intervals in the context of just intonation and tuning theory more broadly.
+                  <i>just intuition</i> is a simple educational web app that helps you <b>test</b>, <b>assess</b>, and <b>improve</b> your intuition
+                  on rational representations of pitches and intervals in the context of just intonation and tuning theory more broadly.
                 </div>
                 <Hr />
               </>

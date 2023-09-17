@@ -4,6 +4,7 @@ import FractionOp from "./FractionOp";
 import arithmSeries from "./arithmSeries";
 import findNearest from "./findNearest";
 import generateURNArray from "./generateURNArray";
+import getUniqueFractionPair from "./getUniqueFractionPair";
 import randomChoice from "./randomChoice";
 import randomFraction from "./randomFraction";
 import shuffleArray from "./shuffleArray";
@@ -62,12 +63,7 @@ export default class QuestionGen {
   }
 
   public static comparison(): BooleanQuestion {
-    const a = randomFraction(0.1, 2.9);
-    let b = { ...a };
-
-    while (FractionOp.equal(a, b)) {
-      b = randomFraction(0.1, 2.9);
-    }
+    const [a, b] = getUniqueFractionPair();
 
     const ops = [
       {
@@ -100,20 +96,12 @@ export default class QuestionGen {
     };
   }
   public static octaveEquivalence(): BooleanQuestion {
-    const a = randomFraction(0.1, 2);
+    let [a, b] = getUniqueFractionPair();
 
     // we enforce a true answer 50% of the time, to compensate for the
     // unlikelyhood of sampling an octave-equivalent ratio
     // NOTE: without this mechanism the answer would be true ~25% of the time
     const forceTrue = Math.random() > 0.5;
-
-    // shallow copy of a to initialize fraction
-    let b = { ...a };
-
-    // ensure both fractions are different and greater than 0
-    while (FractionOp.equal(a, b) || b.n === 0) {
-      b = randomFraction(0.1);
-    }
 
     // check for equivalence
     let isTrue = FractionOp.testOctaveEquivalence(a, b);
@@ -139,4 +127,24 @@ export default class QuestionGen {
       answer: String(isTrue),
     };
   }
+
+  // public static intervalDifference(): FractionalAnswerQuestion {
+  //   let [a, b] = getUniqueFractionPair(1, 2, arithmSeries(2, 4));
+  //   a = FractionOp.normalize(a);
+  //   b = FractionOp.normalize(b);
+
+  //   const reverse = FractionOp.gt(a, b);
+
+  //   if (reverse) {
+  //     [a, b] = [b, a];
+  //   }
+
+  //   const prompt = `What's the interval ratio between pitch ratios ${FractionOp.toString(a)} and ${FractionOp.toString(b)}?`;
+  //   const answer = FractionOp.toString(FractionOp.divide(a, b));
+  //   return {
+  //     type: QuestionType.FRACTIONAL_ANSWER,
+  //     prompt,
+  //     answer,
+  //   };
+  // }
 }

@@ -1,4 +1,5 @@
 import Fraction from "../types/fractions";
+import arithmSeries from "./arithmSeries";
 
 function gcd(a: number, b: number): number {
   return b === 0 ? a : gcd(b, a % b);
@@ -55,7 +56,7 @@ export default class FractionOp {
   }
 
   public static divide(a: Fraction, b: Fraction): Fraction {
-    return { n: a.n * b.d, d: a.d * b.n };
+    return this.reduce({ n: a.n * b.d, d: a.d * b.n });
   }
 
   public static fractionToDecimal(fraction: Fraction): number {
@@ -85,7 +86,7 @@ export default class FractionOp {
     return this.reduce(y);
   }
 
-  public static decimalToFraction(decimal: number, acceptableDenominators: number[] = [...Array(10).keys()].map((_, i) => i + 1)): Fraction {
+  public static decimalToFraction(decimal: number, acceptableDenominators: number[] = arithmSeries(1, 9)): Fraction {
     // check if decimal is negative
     const isNegative = decimal < 0;
 
