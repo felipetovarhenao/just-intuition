@@ -23,7 +23,8 @@ const FractionalAnswer = ({ id }: FractionalAnswerProps) => {
   }
 
   useEffect(() => {
-    dispatch(questionActions.answer({ id, answer: `${num}/${den}` }));
+    const answer = num && den ? `${num}/${den}` : undefined;
+    dispatch(questionActions.answer({ id, answer }));
   }, [num, den]);
 
   function omitSymbols(e: React.KeyboardEvent<HTMLInputElement>) {

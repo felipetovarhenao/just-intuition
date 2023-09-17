@@ -34,7 +34,7 @@ const question = createSlice({
         state.questions.push(callbacks[i]());
       });
     },
-    answer: (state, action: PayloadAction<{ id: number; answer: string }>) => {
+    answer: (state, action: PayloadAction<{ id: number; answer: string | undefined }>) => {
       state.questions[action.payload.id].response = action.payload.answer;
     },
     evaluate: (state) => {
