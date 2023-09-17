@@ -52,9 +52,13 @@
       }
     }
     .question__readonly__proof {
-      @include t-pad($gap-xl);
-      @include l-pad($gap-xxl);
+      @include round;
+      @include shadow;
+      @include v-pad($gap-xl);
+      @include h-pad($gap-xxl);
       @include l-mar($gap-xxl);
+      @include t-mar($gap-xl);
+      background-color: var(--bg-3);
       .question__readonly__proof__token {
         font-size: $txt-ms;
         &.--highlight {
