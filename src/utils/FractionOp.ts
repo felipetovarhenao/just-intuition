@@ -86,7 +86,7 @@ export default class FractionOp {
     return this.reduce(y);
   }
 
-  public static decimalToFraction(decimal: number, acceptableDenominators: number[] = arithmSeries(1, 9)): Fraction {
+  public static decimalToFraction(decimal: number, acceptableDenominators: number[] = arithmSeries(1, 11)): Fraction {
     // check if decimal is negative
     const isNegative = decimal < 0;
 

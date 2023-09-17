@@ -1,7 +1,6 @@
 import Fraction from "../types/fractions";
 import { BooleanQuestion, FractionalAnswerQuestion, MultipleChoiceQuestion, QuestionType } from "../types/questions";
 import FractionOp from "./FractionOp";
-import arithmSeries from "./arithmSeries";
 import findNearest from "./findNearest";
 import generateURNArray from "./generateURNArray";
 import getUniqueFractionPair from "./getUniqueFractionPair";
@@ -43,7 +42,7 @@ export default class QuestionGen {
 
     const intervalRatios = intervalNames.map((_, i) => 2 ** (i / 12));
 
-    const ratio = randomFraction(1, 2, arithmSeries(2, 11));
+    const ratio = randomFraction(1, 2);
 
     const closest = findNearest(FractionOp.fractionToDecimal(ratio), intervalRatios, (a: number, b: number) => Math.abs(Math.log2(a / b)));
 
