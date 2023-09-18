@@ -8,10 +8,17 @@ import Logo from "./components/Logo/Logo";
 import ProgressBar from "./components/ProgressBar/ProgressBar";
 import Icon from "./components/Icon/Icon";
 import Hr from "./components/Hr/Hr";
+import CONFIG, { DeploymentType } from "./utils/config";
+import ReactGA from "react-ga4";
+import useAnalyticsEventTracker, { EventName } from "./hooks/useAnalyticsEventTracker";
 
 const NUM_QUESTIONS = 10;
 
 function App() {
+  ReactGA.initialize("G-QBVN75NENE", {
+    testMode: CONFIG.deploymentType === DeploymentType.DEV,
+  });
+
   const { questions, evaluation } = useAppSelector((state) => state.question);
   const dispatch = useAppDispatch();
 
@@ -19,13 +26,22 @@ function App() {
 
   const [questionIndex, setQuestionIndex] = useState(0);
 
+  const eventTracker = useAnalyticsEventTracker();
+
   function nextQuestion() {
+    eventTracker(EventName.ANSWER_QUESTION);
     setQuestionIndex((x) => x + 1);
   }
 
   function submitAnswers() {
     dispatch(questionActions.evaluate());
+    eventTracker(EventName.FINISH_QUIZ);
     setQuestionIndex(0);
+  }
+
+  function startQuiz() {
+    eventTracker(EventName.START_QUIZ);
+    dispatch(questionActions.generate(NUM_QUESTIONS));
   }
 
   useEffect(() => {
@@ -58,7 +74,7 @@ function App() {
                 <br />
               </div>
             )}
-            <Button onClick={() => dispatch(questionActions.generate(NUM_QUESTIONS))}>take new quiz</Button>
+            <Button onClick={startQuiz}>take new quiz</Button>
             {questions.length === 0 && !evaluation && (
               <>
                 <br />
