@@ -9,6 +9,20 @@
     font-size: $txt-ms;
     text-transform: uppercase;
     color: var(--fg-5);
+    .question__header__help-box {
+      @include l-pad;
+      display: inline-flex;
+      translate: 0px 15%;
+      .question__header__help-box__token {
+        &.--highlight {
+          color: var(--caution-3);
+        }
+        &.--superscript {
+          vertical-align: super;
+          font-size: $txt-xs;
+        }
+      }
+    }
   }
   .question__prompt {
     text-align: center;
@@ -17,23 +31,6 @@
       font-weight: $bold;
       &.--highlight {
         color: var(--caution-3);
-      }
-    }
-    .question__prompt__help-box {
-      @include l-pad;
-      display: inline-flex;
-      .question__prompt__help-box__token {
-        &.--highlight {
-          color: var(--caution-3);
-        }
-        &.--superscript {
-          vertical-align: super;
-          font-size: $txt-xs;
-        }
-        &.--subscript {
-          vertical-align: sub;
-          font-size: $txt-xs;
-        }
       }
     }
   }

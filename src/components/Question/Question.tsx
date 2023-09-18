@@ -20,20 +20,14 @@ const Question = ({ id, question, readonly = false }: QuestionProps) => {
   }
   return (
     <div className="question">
-      <h4 className="question__header">question {id + 1}</h4>
-      <div className="question__prompt">
-        {tokenizeString(question.prompt).map((token, i) => (
-          <span key={i} className={classNames("question__prompt__token", { "--highlight": isHighlight(token.type) })}>
-            {token.substring}
-          </span>
-        ))}
-        <HelpBox className="question__prompt__help-box">
+      <h4 className="question__header">
+        question {id + 1}
+        <HelpBox className="question__header__help-box">
           {tokenizeString(question.hint).map((token, i) => (
             <span
               key={i}
-              className={classNames("question__prompt__help-box__token", {
+              className={classNames("question__header__help-box__token", {
                 "--superscript": token.type === TokenType.SUPERSCRIPT,
-                "--subscript": token.type === TokenType.SUBSCRIPT,
                 "--highlight": isHighlight(token.type),
               })}
             >
@@ -41,6 +35,13 @@ const Question = ({ id, question, readonly = false }: QuestionProps) => {
             </span>
           ))}
         </HelpBox>
+      </h4>
+      <div className="question__prompt">
+        {tokenizeString(question.prompt).map((token, i) => (
+          <span key={i} className={classNames("question__prompt__token", { "--highlight": isHighlight(token.type) })}>
+            {token.substring}
+          </span>
+        ))}
       </div>
       <br />
       {!readonly ? (
