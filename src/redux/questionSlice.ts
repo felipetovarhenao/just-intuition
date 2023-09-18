@@ -29,18 +29,21 @@ const question = createSlice({
       state.questions = [];
       state.evaluation = undefined;
       const q = QuestionGen;
-      const callbacks = [q.closestInterval, q.comparison, q.normalForm, q.octaveEquivalence];
+      const callbacks = [q.closestInterval, q.comparison, q.normalForm, q.octaveEquivalence, q.centApprox];
       const prompts: string[] = [];
       generateURNArray(action.payload, callbacks.length).map((i) => {
         let q = callbacks[i]();
 
         // ensure prompts are not repeated
-        while (prompts.includes(q.prompt)) {
+        let count = 0;
+        const maxIter = 50;
+        while (prompts.includes(q.prompt) && count < maxIter) {
           q = callbacks[i]();
+          count++;
         }
 
         prompts.push(q.prompt);
-        state.questions.push(callbacks[i]());
+        state.questions.push(q);
       });
     },
     answer: (state, action: PayloadAction<{ id: number; answer: string | undefined }>) => {

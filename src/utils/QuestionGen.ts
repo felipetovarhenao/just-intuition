@@ -1,6 +1,8 @@
 import Fraction from "../types/fractions";
 import { BooleanQuestion, FractionalAnswerQuestion, MultipleChoiceQuestion, QuestionType } from "../types/questions";
 import FractionOp from "./FractionOp";
+import arithmSeries from "./arithmSeries";
+import centsToRatio from "./centsToRatio";
 import findNearest from "./findNearest";
 import generateURNArray from "./generateURNArray";
 import getUniqueFractionPair from "./getUniqueFractionPair";
@@ -12,12 +14,48 @@ import wrapValue from "./wrapValue";
 
 const OCTAVE_EQUIVALENCE_HINT =
   "Two ratios are said to be octave-equivalent if one of them can be multiplied or divided by 2^{n} to get the other one, where n is the number of octaves apart.";
+const SIMPLIFIED_RATIO_HINT = "A ratio is said to be simplified when the only common divisor between numerator and denominator is 1.";
+
+const RATIO_TO_CENT_HINT = "To convert a ratio to cents, use the formula 1200*log2(ratio).";
 
 export default class QuestionGen {
+  public static centApprox(): MultipleChoiceQuestion {
+    const isPitch = Math.random();
+    const noun = isPitch ? "pitch" : "interval";
+    const cents = Math.round(Math.random() * 11 + 1) * 100;
+    const denomArray = arithmSeries(1, 11);
+    const bestRatio = FractionOp.decimalToFraction(centsToRatio(cents), denomArray);
+    const answer = FractionOp.toString(bestRatio);
+    const prompt = `Which of the following ${noun} ratios best approximates ${cents}¢?`;
+    const hint = RATIO_TO_CENT_HINT;
+    const choices: string[] = [answer];
+    [...Array(3).keys()].forEach((_) => {
+      let f = choices[0];
+      while (choices.includes(f)) {
+        f = FractionOp.toString(randomFraction(1, 2, denomArray));
+      }
+      choices.push(f);
+    });
+    const getProof = () => {
+      const c = ratioToCents(FractionOp.fractionToDecimal(bestRatio));
+      const diff = Math.round(Math.abs(cents - c) * 100) / 100;
+      return `The ${noun} ratio expressed in cents is ${c}¢, being the best approximation to ${cents} (${diff} difference).`;
+    };
+    return {
+      type: QuestionType.MULTIPLE_CHOICE,
+      prompt,
+      hint,
+      answer,
+      proof: getProof(),
+      choices: shuffleArray(choices),
+    };
+  }
+
   public static normalForm(): FractionalAnswerQuestion {
     const isBelow = Math.random() > 0.5;
     const ratio = randomFraction(...(isBelow ? [0.1, 0.9] : [2.1, 5]));
-    const prompt = `Provide a reduced interval ratio that is octave-equivalent to ${FractionOp.toString(
+    const noun = Math.random() > 0.5 ? "interval" : "pitch";
+    const prompt = `Provide a simplified ${noun} ratio that is octave-equivalent to ${FractionOp.toString(
       ratio
     )}, such that it lies in the (1, 2] range — i.e., 1 ≤ ratio < 2`;
 
@@ -37,7 +75,7 @@ export default class QuestionGen {
       return proof;
     };
 
-    const hint = OCTAVE_EQUIVALENCE_HINT;
+    const hint = `${SIMPLIFIED_RATIO_HINT}\n\n${OCTAVE_EQUIVALENCE_HINT}`;
     return {
       type: QuestionType.FRACTIONAL_ANSWER,
       prompt,
@@ -87,8 +125,7 @@ export default class QuestionGen {
       }¢ difference).`;
     };
 
-    const hint =
-      "To estimate the difference between two intervals, it's best to convert them to cents first, and then find their difference.\n\nTo convert a ratio to cents, use the formula 1200*log2(ratio).";
+    const hint = `To estimate the difference between two intervals, it's best to convert them to cents first, and then find their difference.\n\n${RATIO_TO_CENT_HINT}`;
 
     return {
       type: QuestionType.MULTIPLE_CHOICE,
