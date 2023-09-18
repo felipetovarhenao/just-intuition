@@ -39,7 +39,7 @@ export default class QuestionGen {
     const getProof = () => {
       const c = ratioToCents(FractionOp.fractionToDecimal(bestRatio));
       const diff = Math.round(Math.abs(cents - c) * 100) / 100;
-      return `The ${noun} ratio expressed in cents is ${c}¢, being the best approximation to ${cents} (${diff} difference).`;
+      return `The ${noun} ratio ${answer} expressed in cents is ${c}¢, being the best approximation to ${cents}¢ (${diff}¢ difference).`;
     };
     return {
       type: QuestionType.MULTIPLE_CHOICE,
