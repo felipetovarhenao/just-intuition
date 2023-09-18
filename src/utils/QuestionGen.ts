@@ -11,7 +11,7 @@ import shuffleArray from "./shuffleArray";
 import wrapValue from "./wrapValue";
 
 const OCTAVE_EQUIVALENCE_HINT =
-  "Two interval ratios are said to be octave-equivalent if one of them can be multiplied or divided by 2^{n} to get the other one, where n is the number of octaves apart.";
+  "Two ratios are said to be octave-equivalent if one of them can be multiplied or divided by 2^{n} to get the other one, where n is the number of octaves apart.";
 
 export default class QuestionGen {
   public static normalForm(): FractionalAnswerQuestion {
