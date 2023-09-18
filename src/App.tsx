@@ -9,7 +9,7 @@ import ProgressBar from "./components/ProgressBar/ProgressBar";
 import Icon from "./components/Icon/Icon";
 import Hr from "./components/Hr/Hr";
 
-const NUM_QUESTIONS = 50;
+const NUM_QUESTIONS = 10;
 
 function App() {
   const { questions, evaluation } = useAppSelector((state) => state.question);
