@@ -1,14 +1,17 @@
-<img src='src/assets/logo.png' height='40px' />
+<div style='display: flex; justify-content: center'>
+	<img src='src/assets/logo.png' height='60px' />
+</div>
 
-# [Just intuition](https://felipe-tovar-henao.com/just-intuition)
+## [Just intuition](https://felipe-tovar-henao.com/just-intuition): *a simple educational app for tuning theory enthusiasts*
 
-## Description
+
+### Description
 
 **Just Intuition** is an educational web app that helps you **test**, **assess**, and **improve** your intuition on rational representations of pitches and intervals in the context of just intonation and tuning theory more broadly.
 
 Try the live demo [here](https://felipe-tovar-henao.com/just-intuition).
 
-## License
+### License
 
 ISC License
 Copyright (c) 2023, Felipe Tovar-Henao
