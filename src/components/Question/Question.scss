@@ -19,6 +19,23 @@
         color: var(--caution-3);
       }
     }
+    .question__prompt__help-box {
+      @include l-pad;
+      display: inline-flex;
+      .question__prompt__help-box__token {
+        &.--highlight {
+          color: var(--caution-3);
+        }
+        &.--superscript {
+          vertical-align: super;
+          font-size: $txt-xs;
+        }
+        &.--subscript {
+          vertical-align: sub;
+          font-size: $txt-xs;
+        }
+      }
+    }
   }
   .question__user-input {
     @include v-stack;
@@ -64,6 +81,10 @@
         &.--highlight {
           color: var(--caution-3);
           font-weight: $bold;
+        }
+        &.--superscript {
+          vertical-align: super;
+          font-size: $txt-sm;
         }
       }
     }

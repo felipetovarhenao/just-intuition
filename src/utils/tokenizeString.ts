@@ -2,6 +2,7 @@
 export enum TokenType {
   UNKNOWN,
   FRACTION,
+  SUPERSCRIPT,
   NUMERIC,
   SPECIAL_CHAR,
   ALPHA,
@@ -11,6 +12,7 @@ export enum TokenType {
 export type Tokenizer = {
   regex: RegExp;
   type: TokenType;
+  preprocessor?: (x: string) => string;
 };
 
 // Define Token type
@@ -21,6 +23,14 @@ export type Token = {
 
 const tokenizers: Tokenizer[] = [
   { regex: /\d+\/\d+/, type: TokenType.FRACTION },
+  {
+    regex: /\^\{([^(\{|\^)]+)\}/,
+    type: TokenType.SUPERSCRIPT,
+    preprocessor: (s: string) => {
+      const x = s.slice(2);
+      return x.slice(0, x.length - 1);
+    },
+  },
   { regex: /-?\d+(\.\d+)?/, type: TokenType.NUMERIC },
   { regex: /[^a-zA-Z0-9\s\(\)\[\\?]]+/, type: TokenType.SPECIAL_CHAR },
   { regex: /[^(\d|\(\))]+/, type: TokenType.ALPHA },
@@ -38,7 +48,7 @@ export default function tokenizeString(input: string): Token[] {
       const match = remainingString.match(tokenizer.regex);
 
       if (match && match.index === 0) {
-        tokens.push({ substring: match[0], type: tokenizer.type });
+        tokens.push({ substring: tokenizer.preprocessor ? tokenizer.preprocessor(match[0]) : match[0], type: tokenizer.type });
         remainingString = remainingString.slice(match[0].length);
         matched = true;
         break;

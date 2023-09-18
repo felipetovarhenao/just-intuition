@@ -9,6 +9,7 @@ export type BasicQuestion<T = string> = {
   prompt: string;
   response?: T;
   answer: T;
+  hint: string;
   proof: string;
 };
 

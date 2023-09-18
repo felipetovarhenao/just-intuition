@@ -10,13 +10,16 @@ import ratioToCents from "./ratioToCents";
 import shuffleArray from "./shuffleArray";
 import wrapValue from "./wrapValue";
 
+const OCTAVE_EQUIVALENCE_HINT =
+  "Two interval ratios are said to be octave-equivalent if one of them can be multiplied or divided by 2^{n} to get the other one, where n is the number of octaves apart.";
+
 export default class QuestionGen {
   public static normalForm(): FractionalAnswerQuestion {
     const isBelow = Math.random() > 0.5;
     const ratio = randomFraction(...(isBelow ? [0.1, 0.9] : [2.1, 5]));
     const prompt = `Provide a reduced interval ratio that is octave-equivalent to ${FractionOp.toString(
       ratio
-    )}, such that it falls in the (1, 2] range — i.e., 1 ≤ ratio < 2`;
+    )}, such that it lies in the (1, 2] range — i.e., 1 ≤ ratio < 2`;
 
     const normRatio = FractionOp.normalize(ratio);
     const answer = FractionOp.toString(normRatio);
@@ -30,13 +33,16 @@ export default class QuestionGen {
       const floatAnswer = Math.round(FractionOp.fractionToDecimal(normRatio) * 100) / 100;
       const proof = `${input} is ${times} octave${isPlural ? "s" : ""} ${isPositive ? "above" : "below"} the desired range, which means we must ${
         isPositive ? "divide" : "multiply"
-      } ${input} by 2${isPlural ? `, ${times} times (i.e., 2 to the power of ${times}),` : ""} to get ${answer} (${floatAnswer}).`;
+      } ${input} by 2^{${times}} to get ${answer} (${floatAnswer}).`;
       return proof;
     };
+
+    const hint = OCTAVE_EQUIVALENCE_HINT;
     return {
       type: QuestionType.FRACTIONAL_ANSWER,
       prompt,
       answer,
+      hint,
       proof: getProof(),
     };
   }
@@ -81,11 +87,15 @@ export default class QuestionGen {
       }¢ difference).`;
     };
 
+    const hint =
+      "To estimate the difference between two intervals, it's best to convert them to cents first, and then find their difference.\n\nTo convert a ratio to cents, use the formula 1200*log2(ratio).";
+
     return {
       type: QuestionType.MULTIPLE_CHOICE,
       prompt,
       answer,
       proof: getProof(),
+      hint,
       choices,
     };
   }
@@ -117,20 +127,23 @@ export default class QuestionGen {
 
     const prompt = getPrompt(FractionOp.toString(a), FractionOp.toString(b), op!.symbol);
 
+    const aString = FractionOp.toString(a);
+    const bString = FractionOp.toString(b);
     const getProof = () => {
-      const aString = FractionOp.toString(a);
-      const bString = FractionOp.toString(b);
       const aFloat = Math.round(FractionOp.fractionToDecimal(a) * 100) / 100;
       const bFloat = Math.round(FractionOp.fractionToDecimal(b) * 100) / 100;
-      return `Expressed as decimals, ${aString} is ${aFloat}, and ${bString} is ${bFloat} which means that the statement ${aString} ${
+      return `Expressed in decimals, ${aString} is ${aFloat}, and ${bString} is ${bFloat} which means that the statement ${aString} ${
         op!.symbol
       } ${bString} is ${answer}.`;
     };
+
+    const hint = `This is equivalent to asking if ${aString} ${op!.symbol} ${bString} is true.`;
 
     return {
       type: QuestionType.BOOLEAN,
       prompt,
       answer,
+      hint,
       proof: getProof(),
     };
   }
@@ -168,13 +181,11 @@ export default class QuestionGen {
         const isAbove = octaveShift > 0;
         const numOctaves = Math.abs(octaveShift);
         const isPlural = numOctaves > 1;
-        return `${aString} ${isAbove ? "divided" : "multiplied"} by 2${
-          isPlural ? `, ${numOctaves} times (i.e., 2 to the power of ${numOctaves}),` : ""
-        } is ${bString}, which means that ${FractionOp.toString(a)} and ${FractionOp.toString(b)} are exactly ${numOctaves} octave${
-          isPlural ? "s" : ""
-        } apart.`;
+        return `${aString} ${isAbove ? "divided" : "multiplied"} by 2^{${numOctaves}} is ${bString}, which means that ${FractionOp.toString(
+          a
+        )} and ${FractionOp.toString(b)} are exactly ${numOctaves} octave${isPlural ? "s" : ""} apart.`;
       } else {
-        return `For two ratios to be octave equivalent we must be able to multiply or divide one of them by 2 one or more times to get the other, which is not possible with ${aString} and ${bString}.`;
+        return `For two ratios to be octave equivalent we must be able to multiply or divide one of them by 2^{n} to get the other, which is not possible with ${aString} and ${bString}.`;
       }
     };
 
@@ -183,6 +194,7 @@ export default class QuestionGen {
       prompt,
       answer: String(isTrue),
       proof: getProof(),
+      hint: OCTAVE_EQUIVALENCE_HINT,
     };
   }
 
