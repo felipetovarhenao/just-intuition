@@ -13,6 +13,7 @@
     }
   }
   .help-box-inner {
+    @include shadow;
     @include round-border;
     @include vh-pad($gap-md, $gap-ml);
     position: absolute;

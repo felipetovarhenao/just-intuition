@@ -70,20 +70,22 @@ const Question = ({ id, question, readonly = false }: QuestionProps) => {
           <div className="question__readonly__answer --correct">
             <Icon icon="mingcute:check-fill" /> {question.answer}
           </div>
-          <div className="question__readonly__proof">
-            <b className="question__readonly__proof__token">Explanation</b>:{" "}
-            {tokenizeString(question.proof).map((token, i) => (
-              <span
-                key={i}
-                className={classNames("question__readonly__proof__token", {
-                  "--highlight": isHighlight(token.type),
-                  "--superscript": token.type === TokenType.SUPERSCRIPT,
-                })}
-              >
-                {token.substring}
-              </span>
-            ))}
-          </div>
+          {question.answer !== question.response && (
+            <div className="question__readonly__proof">
+              <b className="question__readonly__proof__token">Explanation</b>:{" "}
+              {tokenizeString(question.proof).map((token, i) => (
+                <span
+                  key={i}
+                  className={classNames("question__readonly__proof__token", {
+                    "--highlight": isHighlight(token.type),
+                    "--superscript": token.type === TokenType.SUPERSCRIPT,
+                  })}
+                >
+                  {token.substring}
+                </span>
+              ))}
+            </div>
+          )}
           <Hr className="question__readonly__hr" />
         </div>
       )}
