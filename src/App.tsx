@@ -76,7 +76,7 @@ function App() {
       text = "Not bad!";
       divClass = "--4";
     } else {
-      text = "Don't give up!";
+      text = "Keep at it!";
       divClass = "--5";
     }
     return <div className={classNames("app__container__summary__pep-text", divClass)}>{text}</div>;
