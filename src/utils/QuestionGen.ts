@@ -16,7 +16,7 @@ const OCTAVE_EQUIVALENCE_HINT =
   "Two ratios are said to be octave-equivalent if one of them can be multiplied or divided by 2^{n} to get the other one, where n is the number of octaves apart.";
 const SIMPLIFIED_RATIO_HINT = "A ratio is said to be simplified when the only common divisor between numerator and denominator is 1.";
 
-const RATIO_TO_CENT_HINT = "To convert a ratio to cents, use the formula 1200*log2(ratio).";
+const RATIO_TO_CENT_HINT = `A good heuristic for approximating ratios to cents is to use the harmonic series as reference. For instance, 7/5 is the same as the interval between partials 5 and 7.\n\nAlternatively, you can use the ratio to cent formula: 1200*log2(ratio).`;
 
 export default class QuestionGen {
   public static centApprox(): MultipleChoiceQuestion {
@@ -125,7 +125,7 @@ export default class QuestionGen {
       }¢ difference).`;
     };
 
-    const hint = `To estimate the difference between two intervals, it's best to convert them to cents first, and then find their difference.\n\n${RATIO_TO_CENT_HINT}`;
+    const hint = RATIO_TO_CENT_HINT;
 
     return {
       type: QuestionType.MULTIPLE_CHOICE,
@@ -138,7 +138,7 @@ export default class QuestionGen {
   }
 
   public static comparison(): BooleanQuestion {
-    const [a, b] = getUniqueFractionPair();
+    const [a, b] = getUniqueFractionPair(1, 2);
 
     const ops = [
       {

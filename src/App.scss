@@ -52,7 +52,39 @@
         color: var(--caution-3);
         font-weight: $bold;
       }
+      .app__container__summary__pep-text {
+        @include stack;
+        @include round(15px);
+        @include vh-pad($gap-ms, $gap-xl);
+        align-self: center;
+        width: fit-content;
+        text-align: center;
+        font-size: $txt-ms;
+        font-weight: $bold;
+        text-transform: uppercase;
+        color: var(--txt-light);
+        &.--0 {
+          background-color: var(--success-3);
+        }
+        &.--1 {
+          background-color: var(--success-3);
+        }
+        &.--2 {
+          background-color: var(--success-3);
+        }
+        &.--3 {
+          background-color: var(--caution-3);
+        }
+        &.--4 {
+          background-color: var(--caution-3);
+        }
+        &.--5 {
+          background-color: var(--danger-3);
+        }
+      }
       .app__container__summary__questions {
+        @include t-mar($gap-xxl);
+        @include t-pad($gap-xxl);
         @include v-stack-c;
         gap: $gap-xxl;
       }

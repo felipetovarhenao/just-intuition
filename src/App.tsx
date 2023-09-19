@@ -11,6 +11,7 @@ import Hr from "./components/Hr/Hr";
 import CONFIG, { DeploymentType } from "./utils/config";
 import ReactGA from "react-ga4";
 import useAnalyticsEventTracker, { EventName } from "./hooks/useAnalyticsEventTracker";
+import classNames from "classnames";
 
 const NUM_QUESTIONS = 10;
 
@@ -51,6 +52,36 @@ function App() {
     setIsComplete(questions.every((q) => q.response !== undefined));
   }, [questions]);
 
+  const isFirstQuiz = () => {
+    return questions.length === 0 && !evaluation;
+  };
+
+  const getQualitativeScore = () => {
+    const score = evaluation!.score;
+    let text = "";
+    let divClass = "";
+    if (score === 1) {
+      text = "Perfect score!";
+      divClass = "--0";
+    } else if (score > 4 / 5) {
+      text = "Impressive!";
+      divClass = "--1";
+    } else if (score > 3 / 5) {
+      text = "Good job!";
+      divClass = "--2";
+    } else if (score > 2 / 5) {
+      text = "Good effort!";
+      divClass = "--3";
+    } else if (score > 1 / 5) {
+      text = "Not bad!";
+      divClass = "--4";
+    } else {
+      text = "Don't give up!";
+      divClass = "--5";
+    }
+    return <div className={classNames("app__container__summary__pep-text", divClass)}>{text}</div>;
+  };
+
   return (
     <div className="app">
       <div className="app__header">
@@ -64,8 +95,9 @@ function App() {
             {evaluation && (
               <div className="app__container__summary">
                 <h2 className="app__container__summary__header">quiz summary</h2>
-                <div className="app__container__summary__score">Final score: {Math.round(evaluation?.score * 100)}%</div>
                 <ProgressBar value={evaluation!.score} />
+                <div className="app__container__summary__score">Final score: {Math.round(evaluation?.score * 100)}%</div>
+                {getQualitativeScore()}
                 <div className="app__container__summary__questions">
                   {evaluation.summary.map((q, i) => (
                     <Question key={q.prompt} id={i} question={q} readonly />
@@ -74,8 +106,8 @@ function App() {
                 <br />
               </div>
             )}
-            <Button onClick={startQuiz}>take new quiz</Button>
-            {questions.length === 0 && !evaluation && (
+            <Button onClick={startQuiz}>{isFirstQuiz() ? "take quiz" : "try again"}</Button>
+            {isFirstQuiz() && (
               <>
                 <br />
                 <Hr />

@@ -1,7 +1,7 @@
 :root {
   --primary-hue: 25;
   --secondary-hue: 10;
-  --saturation: 45%;
+  --saturation: 85%;
 
   // background colors
   --bg-1: hsl(var(--primary-hue), var(--saturation), 98%);
@@ -44,7 +44,7 @@
   // success
   --success-1: hsl(150, 60%, 25%);
   --success-2: hsl(150, 60%, 37%);
-  --success-3: hsl(150, 60%, 50%);
+  --success-3: hsl(150, 60%, 47%);
   --success-4: hsl(150, 60%, 62%);
   --success-5: hsl(150, 60%, 75%);
 
@@ -58,7 +58,7 @@
   // caution
   --caution-1: hsl(40, 70%, 25%);
   --caution-2: hsl(40, 70%, 37%);
-  --caution-3: hsl(40, 70%, 50%);
+  --caution-3: hsl(40, 70%, 47%);
   --caution-4: hsl(40, 70%, 62%);
   --caution-5: hsl(40, 70%, 75%);
 
