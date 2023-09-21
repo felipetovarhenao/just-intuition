@@ -1,7 +1,6 @@
 import Fraction from "../types/fractions";
 import { BooleanQuestion, FractionalAnswerQuestion, MultipleChoiceQuestion, QuestionType } from "../types/questions";
 import FractionOp from "./FractionOp";
-import arithmSeries from "./arithmSeries";
 import centsToRatio from "./centsToRatio";
 import findNearest from "./findNearest";
 import generateURNArray from "./generateURNArray";
@@ -23,8 +22,7 @@ export default class QuestionGen {
     const isPitch = Math.random();
     const noun = isPitch ? "pitch" : "interval";
     const cents = Math.round(Math.random() * 11 + 1) * 100;
-    const denomArray = arithmSeries(1, 13);
-    const bestRatio = FractionOp.decimalToFraction(centsToRatio(cents), denomArray);
+    const bestRatio = FractionOp.decimalToFraction(centsToRatio(cents));
     const answer = FractionOp.toString(bestRatio);
     const prompt = `Which of the following ${noun} ratios best approximates ${cents}¢?`;
     const hint = RATIO_TO_CENT_HINT;
@@ -32,7 +30,7 @@ export default class QuestionGen {
     [...Array(3).keys()].forEach((_) => {
       let f = choices[0];
       while (choices.includes(f)) {
-        f = FractionOp.toString(randomFraction(1, 2, denomArray));
+        f = FractionOp.toString(randomFraction(1, 2));
       }
       choices.push(f);
     });

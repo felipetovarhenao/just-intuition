@@ -86,7 +86,7 @@ export default class FractionOp {
     return this.reduce(y);
   }
 
-  public static decimalToFraction(decimal: number, acceptableDenominators: number[] = arithmSeries(1, 11)): Fraction {
+  public static decimalToFraction(decimal: number, acceptableDenominators: number[] = arithmSeries(1, 13)): Fraction {
     let bestNumerator = 0;
     let bestDenominator = 1;
     let bestError = Math.abs(decimal);
