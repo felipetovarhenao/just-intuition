@@ -23,7 +23,7 @@ export default class QuestionGen {
     const isPitch = Math.random();
     const noun = isPitch ? "pitch" : "interval";
     const cents = Math.round(Math.random() * 11 + 1) * 100;
-    const denomArray = arithmSeries(1, 11);
+    const denomArray = arithmSeries(1, 13);
     const bestRatio = FractionOp.decimalToFraction(centsToRatio(cents), denomArray);
     const answer = FractionOp.toString(bestRatio);
     const prompt = `Which of the following ${noun} ratios best approximates ${cents}¢?`;
