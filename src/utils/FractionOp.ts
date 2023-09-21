@@ -87,42 +87,23 @@ export default class FractionOp {
   }
 
   public static decimalToFraction(decimal: number, acceptableDenominators: number[] = arithmSeries(1, 11)): Fraction {
-    // check if decimal is negative
-    const isNegative = decimal < 0;
+    let bestNumerator = 0;
+    let bestDenominator = 1;
+    let bestError = Math.abs(decimal);
 
-    // convert to positive
-    if (isNegative) {
-      decimal = Math.abs(decimal);
-    }
-
-    // get whole part and normalize to [0-1) range
-    const wholePart = Math.floor(decimal);
-    decimal -= wholePart;
-
-    // initialize mininum difference and best denominator option
-    let minDifference = Infinity;
-    let denominator = 1;
-
-    // find best denominator
     for (let i = 0; i < acceptableDenominators.length; i++) {
-      const den = acceptableDenominators[i];
-      const diff = Math.abs(den * decimal - Math.round(den * decimal));
-      if (diff < minDifference) {
-        minDifference = diff;
-        denominator = den;
+      const denominator = acceptableDenominators[i];
+      const numerator = Math.round(decimal * denominator);
+      const error = Math.abs(decimal - numerator / denominator);
+
+      if (error < bestError) {
+        bestNumerator = numerator;
+        bestDenominator = denominator;
+        bestError = error;
       }
     }
 
-    // get corresponding numerator
-    const numerator = Math.round(denominator * decimal);
-
-    // format as fraction
-    const fraction = {
-      n: (isNegative ? -1 : 1) * (wholePart * denominator) + numerator,
-      d: denominator,
-    };
-
     // reduce before returning
-    return this.reduce(fraction);
+    return this.reduce({ n: bestNumerator, d: bestDenominator });
   }
 }
