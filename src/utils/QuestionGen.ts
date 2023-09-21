@@ -57,7 +57,7 @@ export default class QuestionGen {
     const noun = Math.random() > 0.5 ? "interval" : "pitch";
     const prompt = `Provide a simplified ${noun} ratio that is octave-equivalent to ${FractionOp.toString(
       ratio
-    )}, such that it lies in the (1, 2] range — i.e., 1 ≤ ratio < 2`;
+    )}, such that it lies in the [1, 2) range — i.e., 1 ≤ ratio < 2`;
 
     const normRatio = FractionOp.normalize(ratio);
     const answer = FractionOp.toString(normRatio);
