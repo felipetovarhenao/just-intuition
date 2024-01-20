@@ -12,19 +12,35 @@ import shuffleArray from "./shuffleArray";
 import wrapValue from "./wrapValue";
 
 const OCTAVE_EQUIVALENCE_HINT =
-  "Two ratios are said to be octave-equivalent if one of them can be multiplied or divided by 2^{n} to get the other one, where n is the number of octaves apart.";
+  "Two frequency ratios are said to be octave-equivalent if one of them can be multiplied or divided by 2^{n} to get the other one, where n is the number of octaves apart.";
 const SIMPLIFIED_RATIO_HINT = "A ratio is said to be simplified when the only common divisor between numerator and denominator is 1.";
 
 const RATIO_TO_CENT_HINT = `A good heuristic for approximating ratios to cents is to use the harmonic series as reference. For instance, 7/5 is the same as the interval between partials 5 and 7.\n\nAlternatively, you can use the ratio to cent formula: 1200*log2(ratio).`;
 
+const INTERVAL_NAMES = [
+  "perfect unison",
+  "minor second",
+  "major second",
+  "minor third",
+  "major third",
+  "perfect fourth",
+  "tritone",
+  "perfect fifth",
+  "minor sixth",
+  "major sixth",
+  "minor seventh",
+  "major seventh",
+  "perfect octave",
+];
+
 export default class QuestionGen {
   public static centApprox(): MultipleChoiceQuestion {
-    const isPitch = Math.random();
-    const noun = isPitch ? "pitch" : "interval";
-    const cents = Math.round(Math.random() * 11 + 1) * 100;
+    const pitchClass = Math.round(Math.random() * 11 + 1);
+    const cents = pitchClass * 100;
     const bestRatio = FractionOp.decimalToFraction(centsToRatio(cents));
     const answer = FractionOp.toString(bestRatio);
-    const prompt = `Which of the following ${noun} ratios best approximates ${cents}¢?`;
+    const ref = Math.random() > 0.5 ? `${cents}¢` : `a ${INTERVAL_NAMES[pitchClass]}`
+    const prompt = `Which of the following frequency ratios best approximates ${ref}?`;
     const hint = RATIO_TO_CENT_HINT;
     const choices: string[] = [answer];
     [...Array(3).keys()].forEach((_) => {
@@ -37,7 +53,7 @@ export default class QuestionGen {
     const getProof = () => {
       const c = ratioToCents(FractionOp.fractionToDecimal(bestRatio));
       const diff = Math.round(Math.abs(cents - c) * 100) / 100;
-      return `The ${noun} ratio ${answer} expressed in cents is ${c}¢, being the best approximation to ${cents}¢ (${diff}¢ difference).`;
+      return `The frequency ratio ${answer} expressed in cents is ${c}¢, being the best approximation to ${cents}¢ (${diff}¢ difference).`;
     };
     return {
       type: QuestionType.MULTIPLE_CHOICE,
@@ -52,8 +68,7 @@ export default class QuestionGen {
   public static normalForm(): FractionalAnswerQuestion {
     const isBelow = Math.random() > 0.5;
     const ratio = randomFraction(...(isBelow ? [0.1, 0.9] : [2.1, 5]));
-    const noun = Math.random() > 0.5 ? "interval" : "pitch";
-    const prompt = `Provide a simplified ${noun} ratio that is octave-equivalent to ${FractionOp.toString(
+    const prompt = `Provide a simplified frequency ratio that is octave-equivalent to ${FractionOp.toString(
       ratio
     )}, such that it lies in the [1, 2) range — i.e., 1 ≤ ratio < 2`;
 
@@ -83,39 +98,24 @@ export default class QuestionGen {
     };
   }
   public static closestInterval(): MultipleChoiceQuestion {
-    const intervalNames = [
-      "perfect unison",
-      "minor second",
-      "major second",
-      "minor third",
-      "major third",
-      "perfect fourth",
-      "tritone",
-      "perfect fifth",
-      "minor sixth",
-      "major sixth",
-      "minor seventh",
-      "major seventh",
-      "perfect octave",
-    ];
 
-    const intervalRatios = intervalNames.map((_, i) => 2 ** (i / 12));
+    const intervalRatios = INTERVAL_NAMES.map((_, i) => 2 ** (i / 12));
 
     const ratio = randomFraction(1, 2);
 
     const closest = findNearest(FractionOp.fractionToDecimal(ratio), intervalRatios, (a: number, b: number) => Math.abs(Math.log2(a / b)));
 
-    const prompt = `Which of the following equal-tempered intervals better approximates the interval ratio ${FractionOp.toString(ratio)}?`;
+    const prompt = `Which of the following equal-tempered intervals better approximates the frequency ratio ${FractionOp.toString(ratio)}?`;
 
-    const answer = intervalNames[closest.id];
-    const randomIndices = generateURNArray(3, intervalNames.length - 1).map((x) => x + 1);
+    const answer = INTERVAL_NAMES[closest.id];
+    const randomIndices = generateURNArray(3, INTERVAL_NAMES.length - 1).map((x) => x + 1);
 
-    const choices = shuffleArray([0, ...randomIndices]).map((x) => intervalNames[wrapValue(closest.id + x, intervalNames.length)]);
+    const choices = shuffleArray([0, ...randomIndices]).map((x) => INTERVAL_NAMES[wrapValue(closest.id + x, INTERVAL_NAMES.length)]);
 
     const getProof = () => {
       const aCents = ratioToCents(FractionOp.fractionToDecimal(ratio));
       const bCents = ratioToCents(intervalRatios[closest.id]);
-      const closestName = intervalNames[closest.id];
+      const closestName = INTERVAL_NAMES[closest.id];
       return `Expressed in cents, a ${closestName} is ${bCents}¢, while the ratio ${FractionOp.toString(
         ratio
       )} is ${aCents}¢. Among the options, the ${closestName} is the best approximation (${
@@ -154,10 +154,8 @@ export default class QuestionGen {
     const answer = String(op!.func(a, b) as boolean);
 
     const getPrompt = (a: string, b: string, op: string) => {
-      const isPitch = Math.random() > 0.5;
-      const noun = isPitch ? "pitch" : "interval";
-      const comparison = op === ops[0].symbol ? (isPitch ? "higher" : "larger") : isPitch ? "lower" : "smaller";
-      return `Is the ${noun} ratio ${a} ${comparison} than ${b}?`;
+      const comparison = op === ops[0].symbol ? "larger" : "smaller";
+      return `Is the frequency ratio ${a} ${comparison} than ${b}?`;
     };
 
     const prompt = getPrompt(FractionOp.toString(a), FractionOp.toString(b), op!.symbol);
@@ -206,7 +204,7 @@ export default class QuestionGen {
       b = FractionOp.reduce(FractionOp.multiply(a, shift));
     }
 
-    const prompt = `Are the pitch ratios ${FractionOp.toString(a)} and ${FractionOp.toString(b)} octave-equivalent?`;
+    const prompt = `Are the frequency ratios ${FractionOp.toString(a)} and ${FractionOp.toString(b)} octave-equivalent?`;
 
     const getProof = (): string => {
       const aString = FractionOp.toString(a);
@@ -220,7 +218,7 @@ export default class QuestionGen {
           a
         )} and ${FractionOp.toString(b)} are exactly ${numOctaves} octave${isPlural ? "s" : ""} apart.`;
       } else {
-        return `For two ratios to be octave equivalent we must be able to multiply or divide one of them by 2^{n} to get the other, which is not possible with ${aString} and ${bString}.`;
+        return `For two frequency ratios to be octave equivalent we must be able to multiply or divide one of them by 2^{n} to get the other, which is not possible with ${aString} and ${bString}.`;
       }
     };
 

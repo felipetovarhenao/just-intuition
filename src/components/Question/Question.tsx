@@ -64,7 +64,7 @@ const Question = ({ id, question, readonly = false }: QuestionProps) => {
           {question.answer !== question.response && (
             <div className="question__readonly__answer --incorrect">
               <Icon icon="icon-park-solid:error" />
-              {question.response}
+              {question.response} (your answer)
             </div>
           )}
           <div className="question__readonly__answer --correct">
